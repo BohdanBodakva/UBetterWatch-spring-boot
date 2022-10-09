@@ -13,15 +13,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CoordinatesEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "x")
+    @Column(name = "x", length = 60)
     private String x;
 
-
-    @Column(name = "y")
+    @Column(name = "y", length = 60)
     private String y;
-
 
     @Column(name = "time")
     private LocalDateTime time;
+
+    @ManyToOne
+    @JoinColumn(name = "bracelet_id")
+    private BraceletEntity braceletEntity;
 }

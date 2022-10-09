@@ -15,6 +15,6 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class BraceletStorageEntity {
     @Id
-    @Column(name = "serial_number")
+    @Column(name = "serial_number", length = 50)
     private String serialNumber;
 }

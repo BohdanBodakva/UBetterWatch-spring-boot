@@ -17,15 +17,15 @@ public class BraceletDataEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "sim_name")
+    @Column(name = "sim_name", length = 45)
     private String simName;
 
-    @Column(name = "apn")
+    @Column(name = "apn", length = 70)
     private String apn;
 
-    @Column(name = "username")
+    @Column(name = "username", length = 45)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", length = 45)
     private String password;
 }

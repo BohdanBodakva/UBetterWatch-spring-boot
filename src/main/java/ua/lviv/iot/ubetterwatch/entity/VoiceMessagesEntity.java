@@ -13,11 +13,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VoiceMessagesEntity {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long id;
 
+    @Column(name = "file_name", length = 60)
     private String fileName;
 
-
+    @Column(name = "time")
     private LocalDateTime time;
+
+    @ManyToOne
+    @JoinColumn(name = "bracelet_id")
+    private BraceletEntity braceletEntity;
 }

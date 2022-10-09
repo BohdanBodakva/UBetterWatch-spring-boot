@@ -19,19 +19,19 @@ public class UserEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", length = 45)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", length = 45)
     private String lastName;
 
     @Column(name = "birth_date")
-    private Date birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "start_use_date")
     private LocalDate startUseDate;
 
     @ManyToOne
     @JoinColumn(name = "supervisor_id")
-    private SupervisorEntity supervisorEntity;
+    private SupervisorEntity supervisor;
 }
