@@ -10,10 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "bracelet_storage")@Data
+@Table(name = "bracelet_storage")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BraceletStorageEntity {
+public class BraceletInStorageEntity {
     @Id
     @Column(name = "serial_number", length = 50)
     private String serialNumber;

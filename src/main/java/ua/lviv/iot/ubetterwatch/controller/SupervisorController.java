@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/supervisors")
 public class SupervisorController {
 
-    SupervisorService supervisorService;
+    private SupervisorService supervisorService;
 
     @Autowired
     public SupervisorController(SupervisorService supervisorService) {

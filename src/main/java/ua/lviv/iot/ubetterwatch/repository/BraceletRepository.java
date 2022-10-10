@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ua.lviv.iot.ubetterwatch.entity.BraceletEntity;
 
 @Repository
-public interface BraceletRepository extends JpaRepository<BraceletEntity, Long> {
+public interface BraceletRepository extends JpaRepository<BraceletEntity, String> {
 }

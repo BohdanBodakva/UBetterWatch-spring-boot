@@ -28,6 +28,6 @@ public class CoordinatesEntity {
     private LocalDateTime time;
 
     @ManyToOne
-    @JoinColumn(name = "bracelet_id")
+    @JoinColumn(name = "bracelet_serial_number")
     private BraceletEntity braceletEntity;
 }

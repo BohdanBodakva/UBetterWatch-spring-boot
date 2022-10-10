@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VoiceMessagesEntity {
+public class VoiceMessageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -25,6 +25,6 @@ public class VoiceMessagesEntity {
     private LocalDateTime time;
 
     @ManyToOne
-    @JoinColumn(name = "bracelet_id")
+    @JoinColumn(name = "bracelet_serial_number")
     private BraceletEntity braceletEntity;
 }
