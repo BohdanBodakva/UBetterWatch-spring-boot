@@ -16,7 +16,7 @@ public class BraceletEntity {
     @Column(name = "serial_number", length = 50)
     private String serialNumber;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 

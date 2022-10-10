@@ -27,7 +27,7 @@ public class CoordinatesEntity {
     @Column(name = "time")
     private LocalDateTime time;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bracelet_serial_number")
     private BraceletEntity braceletEntity;
 }

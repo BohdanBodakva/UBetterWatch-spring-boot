@@ -8,14 +8,14 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "bracelet_data")
+@Table(name = "voice_messages")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class VoiceMessageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "file_name", length = 60)
@@ -24,7 +24,7 @@ public class VoiceMessageEntity {
     @Column(name = "time")
     private LocalDateTime time;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bracelet_serial_number")
     private BraceletEntity braceletEntity;
 }

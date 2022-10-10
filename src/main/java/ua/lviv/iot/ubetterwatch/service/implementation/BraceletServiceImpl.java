@@ -63,6 +63,16 @@ public class BraceletServiceImpl implements BraceletService {
 
     @Override
     public BraceletEntity saveBracelet(BraceletEntity bracelet) throws IncorrectDataException {
+        List<BraceletEntity> bracelets = braceletRepository.findAll();
+
+        List<BraceletEntity> braceletsWithSameSerialNumber = bracelets.stream()
+                .filter(br -> br.getSerialNumber().equals(bracelet.getSerialNumber())).toList();
+
+        if(!braceletsWithSameSerialNumber.isEmpty()){
+            throw new IncorrectDataException("Bracelet with serial number = " +
+                    bracelet.getSerialNumber() + " already exists");
+        }
+
         return braceletRepository.save(bracelet);
     }
 
