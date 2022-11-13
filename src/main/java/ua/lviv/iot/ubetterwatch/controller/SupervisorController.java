@@ -1,15 +1,12 @@
 package ua.lviv.iot.ubetterwatch.controller;
 
-import net.bytebuddy.implementation.bind.annotation.Super;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.web.bind.annotation.*;
 import ua.lviv.iot.ubetterwatch.entity.SupervisorEntity;
 import ua.lviv.iot.ubetterwatch.entity.UserEntity;
 import ua.lviv.iot.ubetterwatch.exception_handling.IncorrectDataException;
 import ua.lviv.iot.ubetterwatch.service.SupervisorService;
 
-import javax.ws.rs.Path;
 import java.util.List;
 
 @CrossOrigin
@@ -38,6 +35,14 @@ public class SupervisorController {
     public List<UserEntity> getUsersBySupervisorId(@PathVariable Long id) throws IncorrectDataException {
         return supervisorService.getUsersBySupervisorId(id);
     }
+
+//    @GetMapping("/get-info")
+//    public String getSupervisorInfo(){
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        SupervisorDetails supervisorDetails = (SupervisorDetails) authentication.getPrincipal();
+//        System.out.println(supervisorDetails);
+//        return "";
+//    }
 
     @PostMapping("/")
     public SupervisorEntity saveSupervisor(@RequestBody SupervisorEntity supervisor){

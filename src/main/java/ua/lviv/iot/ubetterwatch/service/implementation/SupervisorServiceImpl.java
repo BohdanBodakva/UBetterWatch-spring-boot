@@ -10,6 +10,7 @@ import ua.lviv.iot.ubetterwatch.repository.SupervisorRepository;
 import ua.lviv.iot.ubetterwatch.repository.UserRepository;
 import ua.lviv.iot.ubetterwatch.service.SupervisorService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -52,11 +53,13 @@ public class SupervisorServiceImpl implements SupervisorService {
     }
 
     @Override
+    @Transactional
     public SupervisorEntity saveSupervisor(SupervisorEntity supervisor) {
         return supervisorRepository.save(supervisor);
     }
 
     @Override
+    @Transactional
     public SupervisorEntity updateSupervisorById(Long id, SupervisorEntity supervisor) throws IncorrectDataException {
         SupervisorEntity supervisorToUpdate = supervisorRepository.findById(id).orElse(null);
 
@@ -71,6 +74,7 @@ public class SupervisorServiceImpl implements SupervisorService {
     }
 
     @Override
+    @Transactional
     public void deleteSupervisorById(Long id) throws IncorrectDataException {
         SupervisorEntity supervisor = supervisorRepository.findById(id).orElse(null);
 
@@ -82,8 +86,11 @@ public class SupervisorServiceImpl implements SupervisorService {
     }
 
     @Override
+    @Transactional
     public void deleteAllSupervisors() {
         supervisorRepository.deleteAll();
     }
+
+
 
 }

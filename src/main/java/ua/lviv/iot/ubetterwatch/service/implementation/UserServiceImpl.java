@@ -10,6 +10,7 @@ import ua.lviv.iot.ubetterwatch.repository.SupervisorRepository;
 import ua.lviv.iot.ubetterwatch.repository.UserRepository;
 import ua.lviv.iot.ubetterwatch.service.UserService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -41,11 +42,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserEntity saveUser(UserEntity user) {
         return userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public UserEntity updateUserById(Long id, UserEntity user) throws IncorrectDataException {
         UserEntity userToUpdate = userRepository.findById(id).orElse(null);
 
@@ -63,6 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUserById(Long id) throws IncorrectDataException {
         UserEntity user = userRepository.findById(id).orElse(null);
 
@@ -74,6 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteAllUsers() {
         userRepository.deleteAll();
     }

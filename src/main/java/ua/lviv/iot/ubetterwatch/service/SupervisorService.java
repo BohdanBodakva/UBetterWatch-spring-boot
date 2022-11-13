@@ -15,5 +15,5 @@ public interface SupervisorService {
     SupervisorEntity updateSupervisorById(Long id, SupervisorEntity supervisor) throws IncorrectDataException;
     void deleteSupervisorById(Long id) throws IncorrectDataException;
     void deleteAllSupervisors();
-//    List<UserEntity> getUsersBySupervisorId(Long id) throws IncorrectDataException;
+
 }

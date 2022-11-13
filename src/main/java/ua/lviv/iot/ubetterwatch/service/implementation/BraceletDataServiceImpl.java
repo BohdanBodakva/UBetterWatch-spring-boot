@@ -8,6 +8,7 @@ import ua.lviv.iot.ubetterwatch.exception_handling.IncorrectDataException;
 import ua.lviv.iot.ubetterwatch.repository.BraceletDataRepository;
 import ua.lviv.iot.ubetterwatch.service.BraceletDataService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -37,11 +38,13 @@ public class BraceletDataServiceImpl implements BraceletDataService {
     }
 
     @Override
+    @Transactional
     public BraceletDataEntity saveBraceletData(BraceletDataEntity braceletData) throws IncorrectDataException {
         return braceletDataRepository.save(braceletData);
     }
 
     @Override
+    @Transactional
     public BraceletDataEntity updateBraceletDataById(Long id, BraceletDataEntity braceletData) throws IncorrectDataException {
         BraceletDataEntity braceletDataToUpdate = braceletDataRepository.findById(id).orElse(null);
 
@@ -58,6 +61,7 @@ public class BraceletDataServiceImpl implements BraceletDataService {
     }
 
     @Override
+    @Transactional
     public void deleteBraceletDataById(Long id) throws IncorrectDataException {
         BraceletDataEntity braceletData = braceletDataRepository.findById(id).orElse(null);
 
@@ -69,6 +73,7 @@ public class BraceletDataServiceImpl implements BraceletDataService {
     }
 
     @Override
+    @Transactional
     public void deleteAllBraceletData() {
         braceletDataRepository.deleteAll();
     }

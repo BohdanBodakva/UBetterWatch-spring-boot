@@ -8,6 +8,7 @@ import ua.lviv.iot.ubetterwatch.exception_handling.IncorrectDataException;
 import ua.lviv.iot.ubetterwatch.repository.CoordinatesRepository;
 import ua.lviv.iot.ubetterwatch.service.CoordinatesService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -37,11 +38,13 @@ public class CoordinatesServiceImpl implements CoordinatesService {
     }
 
     @Override
+    @Transactional
     public CoordinatesEntity saveCoordinates(CoordinatesEntity coordinates) throws IncorrectDataException {
         return coordinatesRepository.save(coordinates);
     }
 
     @Override
+    @Transactional
     public CoordinatesEntity updateCoordinatesById(Long id, CoordinatesEntity coordinates) throws IncorrectDataException {
         CoordinatesEntity coordinatesToUpdate = coordinatesRepository.findById(id).orElse(null);
 
@@ -58,6 +61,7 @@ public class CoordinatesServiceImpl implements CoordinatesService {
     }
 
     @Override
+    @Transactional
     public void deleteCoordinatesById(Long id) throws IncorrectDataException {
         CoordinatesEntity coordinates = coordinatesRepository.findById(id).orElse(null);
 
@@ -69,6 +73,7 @@ public class CoordinatesServiceImpl implements CoordinatesService {
     }
 
     @Override
+    @Transactional
     public void deleteAllCoordinates() {
         coordinatesRepository.deleteAll();
     }

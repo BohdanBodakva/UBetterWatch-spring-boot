@@ -9,6 +9,7 @@ import ua.lviv.iot.ubetterwatch.repository.CoordinatesRepository;
 import ua.lviv.iot.ubetterwatch.repository.VoiceMessagesRepository;
 import ua.lviv.iot.ubetterwatch.service.BraceletService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -62,6 +63,7 @@ public class BraceletServiceImpl implements BraceletService {
     }
 
     @Override
+    @Transactional
     public BraceletEntity saveBracelet(BraceletEntity bracelet) throws IncorrectDataException {
         List<BraceletEntity> bracelets = braceletRepository.findAll();
 
@@ -77,6 +79,7 @@ public class BraceletServiceImpl implements BraceletService {
     }
 
     @Override
+    @Transactional
     public BraceletEntity updateBraceletBySerialNumber(String serialNumber, BraceletEntity bracelet) throws IncorrectDataException {
         BraceletEntity braceletToUpdate = braceletRepository.findById(serialNumber).orElse(null);
 
@@ -91,6 +94,7 @@ public class BraceletServiceImpl implements BraceletService {
     }
 
     @Override
+    @Transactional
     public void deleteBraceletBySerialNumber(String serialNumber) throws IncorrectDataException {
         BraceletEntity bracelet = braceletRepository.findById(serialNumber).orElse(null);
 
@@ -102,6 +106,7 @@ public class BraceletServiceImpl implements BraceletService {
     }
 
     @Override
+    @Transactional
     public void deleteAllBracelets() {
         braceletRepository.deleteAll();
     }

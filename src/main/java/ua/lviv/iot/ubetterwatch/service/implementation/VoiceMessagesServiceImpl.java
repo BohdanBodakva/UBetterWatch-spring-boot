@@ -7,6 +7,7 @@ import ua.lviv.iot.ubetterwatch.exception_handling.IncorrectDataException;
 import ua.lviv.iot.ubetterwatch.repository.VoiceMessagesRepository;
 import ua.lviv.iot.ubetterwatch.service.VoiceMessagesService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -36,11 +37,13 @@ public class VoiceMessagesServiceImpl implements VoiceMessagesService {
     }
 
     @Override
+    @Transactional
     public VoiceMessageEntity saveVoiceMessage(VoiceMessageEntity voiceMessage) throws IncorrectDataException {
         return voiceMessagesRepository.save(voiceMessage);
     }
 
     @Override
+    @Transactional
     public VoiceMessageEntity updateVoiceMessageById(Long id, VoiceMessageEntity coordinates) throws IncorrectDataException {
         VoiceMessageEntity voiceMessageToUpdate = voiceMessagesRepository.findById(id).orElse(null);
 
@@ -56,6 +59,7 @@ public class VoiceMessagesServiceImpl implements VoiceMessagesService {
     }
 
     @Override
+    @Transactional
     public void deleteVoiceMessageById(Long id) throws IncorrectDataException {
         VoiceMessageEntity voiceMessage = voiceMessagesRepository.findById(id).orElse(null);
 
@@ -67,6 +71,7 @@ public class VoiceMessagesServiceImpl implements VoiceMessagesService {
     }
 
     @Override
+    @Transactional
     public void deleteAllVoiceMessages() {
         voiceMessagesRepository.deleteAll();
     }
