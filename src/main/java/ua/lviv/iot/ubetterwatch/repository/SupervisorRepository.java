@@ -8,5 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface SupervisorRepository extends JpaRepository<SupervisorEntity, Long> {
-    SupervisorEntity findSupervisorEntityByUsername(String username);
+    Optional<SupervisorEntity> findSupervisorEntityByUsername(String username);
+    void deleteSupervisorEntitiesByUsername(String username);
+
 }

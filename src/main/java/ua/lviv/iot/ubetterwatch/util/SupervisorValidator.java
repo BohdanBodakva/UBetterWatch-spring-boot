@@ -33,7 +33,7 @@ public class SupervisorValidator implements Validator {
             // good, because this username didn't exist before
             return;
         }
-        errors.rejectValue("username", "", "Person with username " +
+        errors.rejectValue("username", "", "Supervisor with username " +
                 supervisor.getUsername() + " already exists");
     }
 }

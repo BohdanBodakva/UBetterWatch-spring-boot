@@ -32,6 +32,6 @@ public class UserEntity {
     private LocalDate startUseDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "supervisor_id")
+    @JoinColumn(name = "supervisor_username")
     private SupervisorEntity supervisor;
 }
