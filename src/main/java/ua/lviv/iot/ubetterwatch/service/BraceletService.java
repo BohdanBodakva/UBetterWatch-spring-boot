@@ -16,4 +16,8 @@ public interface BraceletService {
     BraceletEntity updateBraceletBySerialNumber(String serialNumber, BraceletEntity bracelet) throws IncorrectDataException;
     void deleteBraceletBySerialNumber(String serialNumber) throws IncorrectDataException;
     void deleteAllBracelets();
+
+    List<BraceletEntity> getUserBraceletsByUserIdAndSupervisorUsername(Long id, String username);
+
+    BraceletEntity getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(String braceletId, Long userId, String username) throws IncorrectDataException;
 }

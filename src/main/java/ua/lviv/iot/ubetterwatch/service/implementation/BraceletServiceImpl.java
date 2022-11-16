@@ -110,4 +110,22 @@ public class BraceletServiceImpl implements BraceletService {
     public void deleteAllBracelets() {
         braceletRepository.deleteAll();
     }
+
+
+    @Override
+    public List<BraceletEntity> getUserBraceletsByUserIdAndSupervisorUsername(Long id, String username) {
+        return braceletRepository.findUserBraceletsByUserIdAndSupervisorUsername(id, username);
+    }
+
+    @Override
+    public BraceletEntity getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(String braceletId, Long userId, String username) throws IncorrectDataException {
+        BraceletEntity bracelet = braceletRepository.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username)
+                .orElse(null);
+
+        if(bracelet == null){
+            throw new IncorrectDataException("Bracelet doesn't exist");
+        }
+
+        return bracelet;
+    }
 }

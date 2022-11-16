@@ -1,37 +1,34 @@
 package ua.lviv.iot.ubetterwatch.controller;
 
+import net.bytebuddy.implementation.bind.annotation.Super;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import ua.lviv.iot.ubetterwatch.entity.BraceletEntity;
-import ua.lviv.iot.ubetterwatch.entity.SupervisorEntity;
-import ua.lviv.iot.ubetterwatch.entity.UserEntity;
+import ua.lviv.iot.ubetterwatch.entity.*;
 import ua.lviv.iot.ubetterwatch.exception_handling.IncorrectDataException;
-import ua.lviv.iot.ubetterwatch.security.SupervisorDetails;
-import ua.lviv.iot.ubetterwatch.service.SupervisorService;
+import ua.lviv.iot.ubetterwatch.service.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/api/supervisors")
 public class SupervisorController {
-
-    private SupervisorService supervisorService;
+    private final SupervisorService supervisorService;
+    private final CoordinatesService coordinatesService;
+    private final VoiceMessagesService voiceMessagesService;
+    private final BraceletDataService braceletDataService;
+    private final BraceletService braceletService;
+    private final UserService userService;
 
     @Autowired
-    public SupervisorController(SupervisorService supervisorService) {
+    public SupervisorController(SupervisorService supervisorService, CoordinatesService coordinatesService, VoiceMessagesService voiceMessagesService, BraceletDataService braceletDataService, BraceletService braceletService, UserService userService) {
         this.supervisorService = supervisorService;
-    }
-
-    @GetMapping("/")
-    public List<SupervisorEntity> getAllSupervisors(){
-        return supervisorService.getAllSupervisors();
+        this.coordinatesService = coordinatesService;
+        this.voiceMessagesService = voiceMessagesService;
+        this.braceletDataService = braceletDataService;
+        this.braceletService = braceletService;
+        this.userService = userService;
     }
 
     @PreAuthorize("#username == principal.username")
@@ -42,78 +39,103 @@ public class SupervisorController {
 
     @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users")
-    public List<UserEntity> getUsersBySupervisorUsername(@PathVariable String username) throws IncorrectDataException {
-
-        return supervisorService.getUsersBySupervisorUsername(username);
+    public List<UserEntity> getUsersBySupervisorUsername(@PathVariable String username) {
+        return userService.getUsersBySupervisorUsername(username);
     }
 
     @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users/{id}")
     public UserEntity getUserBySupervisorUserList(@PathVariable String username,
-                                                         @PathVariable Long id) throws IncorrectDataException {
-
-        return supervisorService.getUserByIdAndSupervisorUsername(id, username);
+                                                  @PathVariable Long id) throws IncorrectDataException {
+        return userService.getUserByIdAndSupervisorUsername(id, username);
     }
 
     @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users/{id}/bracelets")
     public List<BraceletEntity> getUserBraceletsByUserIdAndSupervisorUsername(@PathVariable String username,
-                                                                    @PathVariable Long id) throws IncorrectDataException {
-
-        supervisorService.getUserByIdAndSupervisorUsername(id, username);
-
-        return supervisorService.getUserBraceletsByUserIdAndSupervisorUsername(id, username);
+                                                                              @PathVariable Long id) throws IncorrectDataException {
+        userService.getUserByIdAndSupervisorUsername(id, username);
+        return braceletService.getUserBraceletsByUserIdAndSupervisorUsername(id, username);
     }
 
     @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users/{userId}/bracelets/{braceletId}")
     public BraceletEntity getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
-                                                                    @PathVariable("userId") Long userId,
-                                                                    @PathVariable("braceletId") String braceletId) throws IncorrectDataException {
-
-        supervisorService.getUserByIdAndSupervisorUsername(userId, username);
-
-        return supervisorService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
+                                                                                   @PathVariable("userId") Long userId,
+                                                                                   @PathVariable("braceletId") String braceletId) throws IncorrectDataException {
+        userService.getUserByIdAndSupervisorUsername(userId, username);
+        return braceletService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
     }
 
     @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users/{userId}/bracelets/{braceletId}/bracelet-data")
-    public BraceletEntity getBraceletDataByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
-                                                                                   @PathVariable("userId") Long userId,
-                                                                                   @PathVariable("braceletId") String braceletId) throws IncorrectDataException {
-
-        supervisorService.getUserByIdAndSupervisorUsername(userId, username);
-
-        return supervisorService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
+    public BraceletDataEntity getBraceletDataByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
+                                                                                       @PathVariable("userId") Long userId,
+                                                                                       @PathVariable("braceletId") String braceletId) throws IncorrectDataException {
+        userService.getUserByIdAndSupervisorUsername(userId, username);
+        braceletService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
+        return braceletDataService.getBraceletDataByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
     }
 
-
-
-
-
-
-
-
-
-
-    @PostMapping("/")
-    public SupervisorEntity saveSupervisor(@RequestBody SupervisorEntity supervisor){
-        return supervisorService.saveSupervisor(supervisor);
+    @PreAuthorize("#username == principal.username")
+    @GetMapping("/{username}/users/{userId}/bracelets/{braceletId}/voice-messages")
+    public List<VoiceMessageEntity> getVoiceMessagesByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
+                                                                                              @PathVariable("userId") Long userId,
+                                                                                              @PathVariable("braceletId") String braceletId) throws IncorrectDataException {
+        userService.getUserByIdAndSupervisorUsername(userId, username);
+        braceletService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
+        return voiceMessagesService.getVoiceMessagesByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
     }
 
-//    @PutMapping("/{id}")
-//    public SupervisorEntity updateSupervisorUsername(@PathVariable Long id, @RequestBody SupervisorEntity supervisor) throws IncorrectDataException {
-//        return supervisorService.updateSupervisorById(id, supervisor);
-//    }
+    @PreAuthorize("#username == principal.username")
+    @GetMapping("/{username}/users/{userId}/bracelets/{braceletId}/voice-messages/{voiceMessageId}")
+    public VoiceMessageEntity getVoiceMessagesByVoiceMessageIdBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
+                                                                                                      @PathVariable("userId") Long userId,
+                                                                                                      @PathVariable("braceletId") String braceletId,
+                                                                                                      @PathVariable("voiceMessageId") Long voiceMessageId) throws IncorrectDataException {
+        userService.getUserByIdAndSupervisorUsername(userId, username);
+        braceletService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
+        return voiceMessagesService.getVoiceMessagesByVoiceMessageIdBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username, voiceMessageId);
+    }
 
+    @PreAuthorize("#username == principal.username")
+    @GetMapping("/{username}/users/{userId}/bracelets/{braceletId}/coordinates")
+    public List<CoordinatesEntity> getCoordinatesByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
+                                                                                           @PathVariable("userId") Long userId,
+                                                                                           @PathVariable("braceletId") String braceletId) throws IncorrectDataException {
+        userService.getUserByIdAndSupervisorUsername(userId, username);
+        braceletService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
+        return coordinatesService.getCoordinatesByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
+    }
+
+    @PreAuthorize("#username == principal.username")
+    @GetMapping("/{username}/users/{userId}/bracelets/{braceletId}/coordinates/{coordinatesId}")
+    public CoordinatesEntity getCoordinatesByCoordinatesIdBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
+                                                                                                  @PathVariable("userId") Long userId,
+                                                                                                  @PathVariable("braceletId") String braceletId,
+                                                                                                  @PathVariable("coordinatesId") Long coordinatesId) throws IncorrectDataException {
+        userService.getUserByIdAndSupervisorUsername(userId, username);
+        braceletService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
+        return coordinatesService.getCoordinatesByCoordinatesIdBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username, coordinatesId);
+    }
+
+    @PreAuthorize("#username == principal.username")
+    @PutMapping("/{username}")
+    public SupervisorEntity updateSupervisorByUsername(@PathVariable String username, @RequestBody SupervisorEntity supervisor) throws IncorrectDataException {
+        return supervisorService.updateSupervisorByUsername(username, supervisor);
+    }
+
+    @PreAuthorize("#username == principal.username")
+    @PutMapping("/{username}")
+    public SupervisorEntity updateSupervisorPasswordByUsername(@PathVariable String username, String previousPassword, String newPassword) throws IncorrectDataException {
+        return supervisorService.updateSupervisorPasswordByUsername(username, previousPassword, newPassword);
+    }
+
+    @PreAuthorize("#username == principal.username")
     @DeleteMapping("/{username}")
     public void deleteSupervisorByUsername(@PathVariable String username) throws IncorrectDataException {
         supervisorService.deleteSupervisorByUsername(username);
     }
 
-    @DeleteMapping("/")
-    public void deleteAllSupervisors(){
-        supervisorService.deleteAllSupervisors();
-    }
 
 }

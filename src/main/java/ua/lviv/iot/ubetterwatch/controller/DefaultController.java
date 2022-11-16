@@ -18,8 +18,11 @@ public class DefaultController {
     @GetMapping("/")
     public ModelAndView defaultRoutes(HttpServletRequest request){
         if (request.isUserInRole("ADMIN")) {
+            System.out.println("Registered admin");
             return new ModelAndView("redirect:/api/admin/");
         }
+        System.out.println("Registered supervisor: " + ((SupervisorDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .getUsername());
         return new ModelAndView("redirect:/api/supervisors/" +
                 ((SupervisorDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
                         .getUsername());

@@ -16,11 +16,7 @@ import org.springframework.stereotype.Component;
 import ua.lviv.iot.ubetterwatch.service.implementation.SupervisorDetailsService;
 
 @EnableWebSecurity
-// =================================================
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-// in Service class methods:
-// @PreAuthorize("hasRole('ROLE_ADMIN') or/and hasRole('SOME_ROLE')")
-// =================================================
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final SupervisorDetailsService supervisorDetailsService;
 
@@ -35,33 +31,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
 
         http.authorizeRequests()
+                // requests
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .antMatchers("/api/auth/login", "/api/auth/registration", "/error").permitAll()
                 .antMatchers("/api/supervisors/**").hasRole("SUPERVISOR")
-                .anyRequest().hasAnyRole("SUPERVISOR", "ADMIN")
+                .antMatchers("/api/auth/login", "/api/auth/registration", "/error").permitAll()
                 .and()
-                // configs form for login
+                // login
                 .formLogin().loginPage("/api/auth/login")
-                // getting data from thymeleaf form
                 .loginProcessingUrl("/process_login")
-                // page url after successful auth
                 .defaultSuccessUrl("/api/default/", true)
-                // page url after unsuccessful auth
                 .failureUrl("/api/auth/login?error")
                 .and()
                 // logout
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                // after successful logout
+                .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
                 .logoutSuccessUrl("/api/auth/login");
     }
-
-//    @Component("supervisorSecurity")
-//    public class SupervisorSecurity {
-//        public boolean hasUserId(Authentication authentication, Long userId) {
-//
-//        }
-//    }
 
     // configs the authentication
     @Override

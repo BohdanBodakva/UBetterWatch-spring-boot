@@ -18,7 +18,7 @@ public class VoiceMessageEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "file_name", length = 60)
+    @Column(name = "file_name")
     private String fileName;
 
     @Column(name = "time")

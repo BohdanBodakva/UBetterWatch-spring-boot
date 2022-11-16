@@ -13,4 +13,8 @@ public interface UserService {
     UserEntity updateUserById(Long id, UserEntity supervisor) throws IncorrectDataException;
     void deleteUserById(Long id) throws IncorrectDataException;
     void deleteAllUsers();
+
+    List<UserEntity> getUsersBySupervisorUsername(String username);
+
+    UserEntity getUserByIdAndSupervisorUsername(Long id, String username) throws IncorrectDataException;
 }

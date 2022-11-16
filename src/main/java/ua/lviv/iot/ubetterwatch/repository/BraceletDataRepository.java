@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface BraceletDataRepository extends JpaRepository<BraceletDataEntity, Long> {
 
     @Query("select d from BraceletDataEntity d join BraceletEntity b on b.braceletData.id=d.id join UserEntity u on b.user.id=u.id join SupervisorEntity s on s.username=u.supervisor.username where u.id=:userId and s.username=:supervisorUsername and b.serialNumber=:braceletId")
-    Optional<BraceletEntity> getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(@Param("braceletId") String braceletId, @Param("userId") Long userId, @Param("supervisorUsername") String supervisorUsername);
+    Optional<BraceletDataEntity> getBraceletDataByBraceletIdByUserIdAndSupervisorUsername(@Param("braceletId") String braceletId, @Param("userId") Long userId, @Param("supervisorUsername") String supervisorUsername);
 
 }

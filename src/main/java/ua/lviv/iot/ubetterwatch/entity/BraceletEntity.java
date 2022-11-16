@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class BraceletEntity {
     @Id
-    @Column(name = "serial_number", length = 50)
+    @Column(name = "serial_number")
     private String serialNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
