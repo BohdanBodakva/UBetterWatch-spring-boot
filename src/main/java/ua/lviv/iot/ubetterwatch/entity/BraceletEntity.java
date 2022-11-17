@@ -23,4 +23,28 @@ public class BraceletEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bracelet_data_id")
     private BraceletDataEntity braceletData;
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public BraceletDataEntity getBraceletData() {
+        return braceletData;
+    }
+
+    public void setBraceletData(BraceletDataEntity braceletData) {
+        this.braceletData = braceletData;
+    }
 }
