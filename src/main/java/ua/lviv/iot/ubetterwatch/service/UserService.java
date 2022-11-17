@@ -9,8 +9,8 @@ import java.util.List;
 public interface UserService {
     List<UserEntity> getAllUsers();
     UserEntity getUserById(Long id) throws IncorrectDataException;
-    UserEntity saveUser(UserEntity supervisor) throws IncorrectDataException;
-    UserEntity updateUserById(Long id, UserEntity supervisor) throws IncorrectDataException;
+    UserEntity saveUser(UserEntity user) throws IncorrectDataException;
+    UserEntity updateUserById(Long id, UserEntity user) throws IncorrectDataException;
     void deleteUserById(Long id) throws IncorrectDataException;
     void deleteAllUsers();
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(value = { IncorrectDataException.class })
+    @ExceptionHandler(value = { Exception.class })
     public ResponseEntity<IncorrectData> handleAllExceptions(Exception exception){
         IncorrectData data = new IncorrectData(exception.getMessage());
         return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);

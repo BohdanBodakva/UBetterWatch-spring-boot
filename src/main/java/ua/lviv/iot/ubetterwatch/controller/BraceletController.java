@@ -30,15 +30,15 @@ public class BraceletController {
         return braceletService.getBraceletBySerialNumber(serialNumber);
     }
 
-    @GetMapping("/{serialNumber}/voice-messages")
-    public List<VoiceMessageEntity> getVoiceMessagesByBraceletSerialNumber(@PathVariable String serialNumber) throws IncorrectDataException {
-        return braceletService.getVoiceMessagesByBraceletSerialNumber(serialNumber);
-    }
-
-    @GetMapping("/{serialNumber}/coordinates")
-    public List<CoordinatesEntity> getCoordinatesByBraceletSerialNumber(@PathVariable String serialNumber) throws IncorrectDataException {
-        return braceletService.getCoordinatesByBraceletSerialNumber(serialNumber);
-    }
+//    @GetMapping("/{serialNumber}/voice-messages")
+//    public List<VoiceMessageEntity> getVoiceMessagesByBraceletSerialNumber(@PathVariable String serialNumber) throws IncorrectDataException {
+//        return braceletService.getVoiceMessagesByBraceletSerialNumber(serialNumber);
+//    }
+//
+//    @GetMapping("/{serialNumber}/coordinates")
+//    public List<CoordinatesEntity> getCoordinatesByBraceletSerialNumber(@PathVariable String serialNumber) throws IncorrectDataException {
+//        return braceletService.getCoordinatesByBraceletSerialNumber(serialNumber);
+//    }
 
     @PostMapping("/")
     public BraceletEntity saveSupervisor(@RequestBody BraceletEntity bracelet) throws IncorrectDataException {
