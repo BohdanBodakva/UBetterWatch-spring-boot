@@ -16,6 +16,10 @@ import java.util.Collections;
 public class SupervisorDetails implements UserDetails {
     private final SupervisorEntity supervisor;
 
+    public SupervisorEntity getSupervisor() {
+        return supervisor;
+    }
+
     public SupervisorDetails(SupervisorEntity supervisor) {
         this.supervisor = supervisor;
     }
