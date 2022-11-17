@@ -20,7 +20,8 @@ public class SupervisorDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SupervisorEntity supervisor = supervisorRepository.findSupervisorEntityByUsername(username);
+        SupervisorEntity supervisor = supervisorRepository.findSupervisorEntityByUsername(username)
+                .orElse(null);
 
         if (supervisor == null) {
             throw new UsernameNotFoundException("Supervisor with username "

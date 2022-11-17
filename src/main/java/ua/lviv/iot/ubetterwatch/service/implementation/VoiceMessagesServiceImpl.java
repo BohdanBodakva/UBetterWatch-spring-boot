@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class VoiceMessagesServiceImpl implements VoiceMessagesService {
 
-    private VoiceMessagesRepository voiceMessagesRepository;
+    private final VoiceMessagesRepository voiceMessagesRepository;
 
     @Autowired
     public VoiceMessagesServiceImpl(VoiceMessagesRepository voiceMessagesRepository) {
@@ -75,4 +75,23 @@ public class VoiceMessagesServiceImpl implements VoiceMessagesService {
     public void deleteAllVoiceMessages() {
         voiceMessagesRepository.deleteAll();
     }
+
+    @Override
+    public List<VoiceMessageEntity> getVoiceMessagesByBraceletIdByUserIdAndSupervisorUsername(String braceletId, Long userId, String supervisorUsername) {
+        return voiceMessagesRepository.getVoiceMessagesByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, supervisorUsername);
+    }
+
+    @Override
+    public VoiceMessageEntity getVoiceMessagesByVoiceMessageIdBraceletIdByUserIdAndSupervisorUsername(String braceletId, Long userId, String supervisorUsername, Long voiceMessageId) throws IncorrectDataException {
+        VoiceMessageEntity voiceMessage = voiceMessagesRepository.getVoiceMessagesByVoiceMessageIdBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, supervisorUsername, voiceMessageId)
+                .orElse(null);
+
+        if(voiceMessage == null){
+            throw new IncorrectDataException("Voice message doesn't exist");
+        }
+
+        return voiceMessage;
+    }
+
+
 }

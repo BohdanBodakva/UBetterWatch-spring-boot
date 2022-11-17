@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lviv.iot.ubetterwatch.entity.BraceletDataEntity;
 import ua.lviv.iot.ubetterwatch.entity.CoordinatesEntity;
+import ua.lviv.iot.ubetterwatch.entity.VoiceMessageEntity;
 import ua.lviv.iot.ubetterwatch.exception_handling.IncorrectDataException;
 import ua.lviv.iot.ubetterwatch.repository.CoordinatesRepository;
 import ua.lviv.iot.ubetterwatch.service.CoordinatesService;
@@ -76,5 +77,22 @@ public class CoordinatesServiceImpl implements CoordinatesService {
     @Transactional
     public void deleteAllCoordinates() {
         coordinatesRepository.deleteAll();
+    }
+
+    @Override
+    public List<CoordinatesEntity> getCoordinatesByBraceletIdByUserIdAndSupervisorUsername(String braceletId, Long userId, String supervisorUsername) {
+        return coordinatesRepository.getCoordinatesByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, supervisorUsername);
+    }
+
+    @Override
+    public CoordinatesEntity getCoordinatesByCoordinatesIdBraceletIdByUserIdAndSupervisorUsername(String braceletId, Long userId, String supervisorUsername, Long coordinatesId) throws IncorrectDataException {
+        CoordinatesEntity coordinates = coordinatesRepository.getCoordinatesByCoordinatesIdBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, supervisorUsername, coordinatesId)
+                .orElse(null);
+
+        if(coordinates == null){
+            throw new IncorrectDataException("Coordinates doesn't exist");
+        }
+
+        return coordinates;
     }
 }

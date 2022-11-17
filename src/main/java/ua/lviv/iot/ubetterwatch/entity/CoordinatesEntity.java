@@ -18,10 +18,10 @@ public class CoordinatesEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "x", length = 60)
+    @Column(name = "x")
     private String x;
 
-    @Column(name = "y", length = 60)
+    @Column(name = "y")
     private String y;
 
     @Column(name = "time")

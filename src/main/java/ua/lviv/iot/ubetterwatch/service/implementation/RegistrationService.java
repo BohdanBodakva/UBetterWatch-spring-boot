@@ -22,7 +22,7 @@ public class RegistrationService {
     @Transactional
     public void register(SupervisorEntity supervisor){
 
-        supervisor.setRole("ROLE_USER");
+        supervisor.setRole("ROLE_SUPERVISOR");
         supervisor.setPassword(passwordEncoder.encode(supervisor.getPassword()));
 
         supervisorRepository.save(supervisor);

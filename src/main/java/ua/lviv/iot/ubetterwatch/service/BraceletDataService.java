@@ -13,4 +13,6 @@ public interface BraceletDataService {
     BraceletDataEntity updateBraceletDataById(Long id, BraceletDataEntity braceletData) throws IncorrectDataException;
     void deleteBraceletDataById(Long id) throws IncorrectDataException;
     void deleteAllBraceletData();
+    BraceletDataEntity getBraceletDataByBraceletIdByUserIdAndSupervisorUsername(String braceletId, Long userId, String username) throws IncorrectDataException;
+
 }

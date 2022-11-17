@@ -7,18 +7,16 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.stereotype.Component;
 import ua.lviv.iot.ubetterwatch.service.implementation.SupervisorDetailsService;
 
 @EnableWebSecurity
-// =================================================
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
-// in Service class methods:
-// @PreAuthorize("hasRole('ROLE_ADMIN') or/and hasRole('SOME_ROLE')")
-// =================================================
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final SupervisorDetailsService supervisorDetailsService;
 
@@ -33,24 +31,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
 
         http.authorizeRequests()
-                .antMatchers("/api/admin/").hasRole("ADMIN")
-                // permitted for all
+                // requests
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/supervisors/**").hasRole("SUPERVISOR")
                 .antMatchers("/api/auth/login", "/api/auth/registration", "/error").permitAll()
-                .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
-                // configs form for login
+                // login
                 .formLogin().loginPage("/api/auth/login")
-                // getting data from thymeleaf form
                 .loginProcessingUrl("/process_login")
-                // page url after successful auth
-                .defaultSuccessUrl("/api/supervisors/", true)
-                // page url after unsuccessful auth
+                .defaultSuccessUrl("/api/default/", true)
                 .failureUrl("/api/auth/login?error")
                 .and()
                 // logout
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                // after successful logout
+                .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
                 .logoutSuccessUrl("/api/auth/login");
     }
 

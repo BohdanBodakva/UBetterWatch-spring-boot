@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api/bracelets")
 public class BraceletController {
 
-    private BraceletService braceletService;
+    private final BraceletService braceletService;
 
     @Autowired
     public BraceletController(BraceletService braceletService) {

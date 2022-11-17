@@ -77,4 +77,16 @@ public class BraceletDataServiceImpl implements BraceletDataService {
     public void deleteAllBraceletData() {
         braceletDataRepository.deleteAll();
     }
+
+    @Override
+    public BraceletDataEntity getBraceletDataByBraceletIdByUserIdAndSupervisorUsername(String braceletId, Long userId, String username) throws IncorrectDataException {
+        BraceletDataEntity braceletData = braceletDataRepository.getBraceletDataByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username)
+                .orElse(null);
+
+        if(braceletData == null){
+            throw new IncorrectDataException("Bracelet Data doesn't exist");
+        }
+
+        return braceletData;
+    }
 }

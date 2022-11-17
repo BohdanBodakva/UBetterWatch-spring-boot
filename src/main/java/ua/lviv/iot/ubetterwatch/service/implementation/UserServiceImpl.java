@@ -12,6 +12,8 @@ import ua.lviv.iot.ubetterwatch.service.UserService;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -81,5 +83,25 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteAllUsers() {
         userRepository.deleteAll();
+    }
+
+    @Override
+    public List<UserEntity> getUsersBySupervisorUsername(String username) {
+        List<UserEntity> users = userRepository.findAll();
+        return users.stream()
+                .filter(user -> Objects.equals(user.getSupervisor().getUsername(), username))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserEntity getUserByIdAndSupervisorUsername(Long id, String username) throws IncorrectDataException {
+        UserEntity user = userRepository.findUserEntityByIdAndSupervisorUsername(id, username)
+                .orElse(null);
+
+        if(user == null){
+            throw new IncorrectDataException("User doesn't exist");
+        }
+
+        return user;
     }
 }
