@@ -47,22 +47,6 @@ public class BraceletServiceImpl implements BraceletService {
     }
 
     @Override
-    public List<CoordinatesEntity> getCoordinatesByBraceletSerialNumber(String serialNumber) {
-        List<CoordinatesEntity> coordinates = coordinatesRepository.findAll();
-        return coordinates.stream()
-                .filter(user -> Objects.equals(user.getBraceletEntity().getSerialNumber(), serialNumber))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<VoiceMessageEntity> getVoiceMessagesByBraceletSerialNumber(String serialNumber) {
-        List<VoiceMessageEntity> voiceMessages = voiceMessagesRepository.findAll();
-        return voiceMessages.stream()
-                .filter(user -> Objects.equals(user.getBraceletEntity().getSerialNumber(), serialNumber))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     @Transactional
     public BraceletEntity saveBracelet(BraceletEntity bracelet) throws IncorrectDataException {
         List<BraceletEntity> bracelets = braceletRepository.findAll();
