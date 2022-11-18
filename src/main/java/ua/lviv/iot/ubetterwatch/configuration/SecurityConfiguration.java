@@ -5,15 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.stereotype.Component;
 import ua.lviv.iot.ubetterwatch.service.implementation.SupervisorDetailsService;
 
 @EnableWebSecurity
@@ -48,10 +44,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 // requests
-                .antMatchers(SWAGGER_PATHS).permitAll()
+//                .antMatchers(SWAGGER_PATHS).permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/supervisors/**").hasRole("SUPERVISOR")
                 .antMatchers("/api/auth/login", "/api/auth/registration", "/error").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 // login
                 .formLogin().loginPage("/api/auth/login")
@@ -63,6 +60,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
                 .logoutSuccessUrl("/api/auth/login");
+
+        http.csrf().disable();
     }
 
     // configs the authentication

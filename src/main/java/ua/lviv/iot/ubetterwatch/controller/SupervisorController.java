@@ -85,8 +85,7 @@ public class SupervisorController {
     @PostMapping("/{username}/users/")
     public UserEntity saveUserBySupervisorUserList(@RequestBody UserEntity user,
                                                    @PathVariable String username) throws IncorrectDataException {
-        user.setSupervisor(((SupervisorDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .getSupervisor());
+        user.setSupervisor(supervisorService.getSupervisorByUsername(username));
         return userService.saveUser(user);
     }
 
@@ -96,8 +95,7 @@ public class SupervisorController {
                                                      @PathVariable Long id,
                                                      @PathVariable String username) throws IncorrectDataException {
         userService.getUserByIdAndSupervisorUsername(id, username);
-        user.setSupervisor(((SupervisorDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .getSupervisor());
+        user.setSupervisor(supervisorService.getSupervisorByUsername(username));
         return userService.updateUserById(id, user);
     }
 
@@ -178,13 +176,15 @@ public class SupervisorController {
 
     @PreAuthorize("#username == principal.username")
     @PostMapping("/{username}/users/{userId}/bracelets/{braceletId}/bracelet-data")
-    public BraceletDataEntity saveBraceletDataByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
+    public BraceletDataEntity updateBraceletDataByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                         @PathVariable("userId") Long userId,
                                                                                         @PathVariable("braceletId") String braceletId,
                                                                                         @RequestBody BraceletDataEntity braceletData) throws IncorrectDataException {
         userService.getUserByIdAndSupervisorUsername(userId, username);
         braceletService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
-        return braceletDataService.saveBraceletData(braceletData);
+        return braceletDataService.updateBraceletDataById(
+                braceletService.getBraceletBySerialNumber(braceletId).getBraceletData().getId(),
+                braceletData);
     }
 
 

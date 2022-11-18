@@ -52,7 +52,7 @@ public class BraceletServiceImpl implements BraceletService {
         List<BraceletEntity> bracelets = braceletRepository.findAll();
 
         List<BraceletEntity> braceletsWithSameSerialNumber = bracelets.stream()
-                .filter(br -> br.getSerialNumber().equals(bracelet.getSerialNumber())).toList();
+                .filter(br -> br.getSerialNumber().equals(bracelet.getSerialNumber())).collect(Collectors.toList());
 
         if(!braceletsWithSameSerialNumber.isEmpty()){
             throw new IncorrectDataException("Bracelet with serial number = " +
