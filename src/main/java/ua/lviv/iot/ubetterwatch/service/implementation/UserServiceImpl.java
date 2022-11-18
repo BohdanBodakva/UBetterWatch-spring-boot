@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setStartUseDate(user.getStartUseDate());
         userToUpdate.setSupervisor(user.getSupervisor());
 
-        return userRepository.save(user);
+        return userRepository.save(userToUpdate);
     }
 
     @Override
@@ -87,10 +87,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserEntity> getUsersBySupervisorUsername(String username) {
-        List<UserEntity> users = userRepository.findAll();
-        return users.stream()
-                .filter(user -> Objects.equals(user.getSupervisor().getUsername(), username))
-                .collect(Collectors.toList());
+        return userRepository.findUserEntitiesBySupervisorUsername(username);
     }
 
     @Override
