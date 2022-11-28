@@ -1,7 +1,7 @@
 package ua.lviv.iot.ubetterwatch.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.lviv.iot.ubetterwatch.entity.*;
 import ua.lviv.iot.ubetterwatch.exception_handling.IncorrectDataException;
@@ -10,17 +10,17 @@ import ua.lviv.iot.ubetterwatch.service.SupervisorService;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class SupervisorServiceImpl implements SupervisorService {
 
     private final SupervisorRepository supervisorRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public SupervisorServiceImpl(SupervisorRepository supervisorRepository) {
+    public SupervisorServiceImpl(SupervisorRepository supervisorRepository, PasswordEncoder passwordEncoder) {
         this.supervisorRepository = supervisorRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -81,8 +81,8 @@ public class SupervisorServiceImpl implements SupervisorService {
             throw new IncorrectDataException("Supervisor with username=" + username + " doesn't exist");
         }
 
-        if(previousPassword.equals(supervisorToUpdate.getPassword())){
-            supervisorToUpdate.setPassword(newPassword);
+        if(passwordEncoder.matches(previousPassword, supervisorToUpdate.getPassword())){
+            supervisorToUpdate.setPassword(passwordEncoder.encode(newPassword));
         } else {
             throw new IncorrectDataException("Previous password doesn't match");
         }

@@ -41,8 +41,8 @@ CREATE TABLE `ubetterwatch_db`.`user` (
   CONSTRAINT `fk_user_supervisor1`
     FOREIGN KEY (`supervisor_username`)
     REFERENCES `ubetterwatch_db`.`supervisor` (`username`)
-    ON DELETE SET NULL
-    ON UPDATE SET NULL
+     ON DELETE SET NULL
+     ON UPDATE CASCADE
 );
 
 
@@ -64,7 +64,7 @@ CREATE TABLE `ubetterwatch_db`.`bracelet_data` (
 -- -----------------------------------------------------
 CREATE TABLE `ubetterwatch_db`.`bracelet` (
   `serial_number` VARCHAR(50) NOT NULL,
-  `user_id` BIGINT NOT NULL,
+  `user_id` BIGINT,
   `bracelet_data_id` BIGINT NOT NULL,
   PRIMARY KEY (`serial_number`),
   INDEX `fk_bracelet_user1_idx` (`user_id` ASC) VISIBLE,
@@ -72,13 +72,13 @@ CREATE TABLE `ubetterwatch_db`.`bracelet` (
   CONSTRAINT `fk_bracelet_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `ubetterwatch_db`.`user` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+     ON DELETE SET NULL
+     ON UPDATE CASCADE,
   CONSTRAINT `fk_bracelet_bracelet_data1`
     FOREIGN KEY (`bracelet_data_id`)
     REFERENCES `ubetterwatch_db`.`bracelet_data` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
+     ON DELETE CASCADE
+     ON UPDATE CASCADE
 );
 
 
@@ -135,4 +135,22 @@ insert into supervisor(username, first_name, last_name, password, role) values('
 );
 insert into supervisor(username, first_name, last_name, password, role) values('s3', 's3', 's3', '$2a$10$qB81aAxZiuyMVm4ly3By9.vdhQnyJVMudMQCJOXJwg.5Arof9k76i', 'ROLE_SUPERVISOR'
 );
+
+
+insert into user(first_name, last_name, birth_date, start_use_date, supervisor_username) values("u1", "u1", "2020-01-01", "2020-01-01", "s1");
+insert into user(first_name, last_name, birth_date, start_use_date, supervisor_username) values("u2", "u2", "2020-01-01", "2020-01-01", "s2");
+
+
+
+
+insert into bracelet_data(sim_name, apn, username, password) values("sdfdsffewew", "fsdafdsafadsfds", "sdfdsfdsf", "sadfadsfdsf");
+insert into bracelet_data(sim_name, apn, username, password) values("sdfdsffewew", "fsdafdsafadsfds", "sdfdsfdsf", "sadfadsfdsf");
+
+
+
+
+insert into bracelet(serial_number, user_id, bracelet_data_id) values("xxx1", 1, 1);
+insert into bracelet(serial_number, user_id, bracelet_data_id) values("xxx2", 2, 2);
+
+
 
