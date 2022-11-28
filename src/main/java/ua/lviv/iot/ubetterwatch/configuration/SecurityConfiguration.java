@@ -38,13 +38,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     };
 
     // configs the authorization,
-    // and it is config for all Spring Security in general
+    // and Spring Security in general
     @Override
     protected void configure(HttpSecurity http) throws Exception{
 
         http.authorizeRequests()
                 // requests
-//                .antMatchers(SWAGGER_PATHS).permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/supervisors/**").hasRole("SUPERVISOR")
                 .antMatchers("/api/auth/login", "/api/auth/registration", "/error").permitAll()
@@ -71,7 +70,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(getPasswordEncoder());
     }
 
-    // encode password
+    // password encoding
     @Bean
     public PasswordEncoder getPasswordEncoder(){
         return new BCryptPasswordEncoder();

@@ -57,7 +57,7 @@ public class SupervisorController {
         return supervisorService
                 .updateSupervisorPasswordByUsername(username,
                                                     changePassword.getPreviousPassword(),
-                                                    changePassword.getNewPassword());
+                                                       changePassword.getNewPassword());
     }
 
     @PreAuthorize("#username == principal.username")
@@ -175,7 +175,7 @@ public class SupervisorController {
     }
 
     @PreAuthorize("#username == principal.username")
-    @PostMapping("/{username}/users/{userId}/bracelets/{braceletId}/bracelet-data")
+    @PutMapping("/{username}/users/{userId}/bracelets/{braceletId}/bracelet-data")
     public BraceletDataEntity updateBraceletDataByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                         @PathVariable("userId") Long userId,
                                                                                         @PathVariable("braceletId") String braceletId,
@@ -284,31 +284,6 @@ public class SupervisorController {
         braceletService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
         coordinates.setBraceletEntity(braceletService.getBraceletBySerialNumber(braceletId));
         return coordinatesService.saveCoordinates(coordinates);
-    }
-
-    @PreAuthorize("#username == principal.username")
-    @PutMapping("/{username}/users/{userId}/bracelets/{braceletId}/coordinates/{coordinatesId}")
-    public CoordinatesEntity updateCoordinatesByCoordinatesIdBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
-                                                                                                         @PathVariable("userId") Long userId,
-                                                                                                         @PathVariable("braceletId") String braceletId,
-                                                                                                         @PathVariable("coordinatesId") Long coordinatesId,
-                                                                                                         @RequestBody CoordinatesEntity coordinates) throws IncorrectDataException {
-        userService.getUserByIdAndSupervisorUsername(userId, username);
-        braceletService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
-        coordinatesService.getCoordinatesByCoordinatesIdBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username, coordinatesId);
-        return coordinatesService.updateCoordinatesById(coordinatesId, coordinates);
-    }
-
-    @PreAuthorize("#username == principal.username")
-    @DeleteMapping("/{username}/users/{userId}/bracelets/{braceletId}/coordinates/{coordinatesId}")
-    public void deleteCoordinatesByCoordinatesIdBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
-                                                                                           @PathVariable("userId") Long userId,
-                                                                                           @PathVariable("braceletId") String braceletId,
-                                                                                           @PathVariable("coordinatesId") Long coordinatesId) throws IncorrectDataException {
-        userService.getUserByIdAndSupervisorUsername(userId, username);
-        braceletService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
-        coordinatesService.getCoordinatesByCoordinatesIdBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username, coordinatesId);
-        coordinatesService.deleteCoordinatesById(coordinatesId);
     }
 
 
