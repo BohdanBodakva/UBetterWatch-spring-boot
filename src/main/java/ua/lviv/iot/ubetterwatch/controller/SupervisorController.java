@@ -1,13 +1,13 @@
 package ua.lviv.iot.ubetterwatch.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import ua.lviv.iot.ubetterwatch.entity.*;
 import ua.lviv.iot.ubetterwatch.entity.change_password.ChangePassword;
 import ua.lviv.iot.ubetterwatch.exception_handling.IncorrectDataException;
-import ua.lviv.iot.ubetterwatch.security.SupervisorDetails;
+//import ua.lviv.iot.ubetterwatch.security.jwt.JwtTokenProvider;
 import ua.lviv.iot.ubetterwatch.service.*;
 
 import java.util.List;
@@ -16,6 +16,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/supervisors")
 public class SupervisorController {
+
+//    private final AuthenticationManager authenticationManager;
+//    private final JwtTokenProvider jwtTokenProvider;
     private final SupervisorService supervisorService;
     private final CoordinatesService coordinatesService;
     private final VoiceMessagesService voiceMessagesService;
@@ -26,6 +29,8 @@ public class SupervisorController {
 
     @Autowired
     public SupervisorController(SupervisorService supervisorService, CoordinatesService coordinatesService, VoiceMessagesService voiceMessagesService, BraceletDataService braceletDataService, BraceletService braceletService, UserService userService, BraceletInStorageService braceletInStorageService) {
+//        this.authenticationManager = authenticationManager;
+//        this.jwtTokenProvider = jwtTokenProvider;
         this.supervisorService = supervisorService;
         this.coordinatesService = coordinatesService;
         this.voiceMessagesService = voiceMessagesService;
@@ -37,20 +42,20 @@ public class SupervisorController {
 
     // ===========================================================================================
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}")
     public SupervisorEntity getSupervisorByUsername(@PathVariable String username) throws IncorrectDataException {
         return supervisorService.getSupervisorByUsername(username);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @PutMapping("/{username}")
     public SupervisorEntity updateSupervisorByUsername(@PathVariable String username,
                                                        @RequestBody SupervisorEntity supervisor) throws IncorrectDataException {
         return supervisorService.updateSupervisorByUsername(username, supervisor);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @PutMapping("/{username}/update-password")
     public SupervisorEntity updateSupervisorPasswordByUsername(@PathVariable String username,
                                                                @RequestBody ChangePassword changePassword) throws IncorrectDataException {
@@ -60,7 +65,7 @@ public class SupervisorController {
                                                        changePassword.getNewPassword());
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @DeleteMapping("/{username}")
     public void deleteSupervisorByUsername(@PathVariable String username) throws IncorrectDataException {
         supervisorService.deleteSupervisorByUsername(username);
@@ -68,20 +73,20 @@ public class SupervisorController {
 
     // ====================================================================================
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users")
     public List<UserEntity> getUsersBySupervisorUsername(@PathVariable String username) {
         return userService.getUsersBySupervisorUsername(username);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users/{id}")
     public UserEntity getUserBySupervisorUserList(@PathVariable String username,
                                                   @PathVariable Long id) throws IncorrectDataException {
         return userService.getUserByIdAndSupervisorUsername(id, username);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @PostMapping("/{username}/users/")
     public UserEntity saveUserBySupervisorUserList(@RequestBody UserEntity user,
                                                    @PathVariable String username) throws IncorrectDataException {
@@ -89,7 +94,7 @@ public class SupervisorController {
         return userService.saveUser(user);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @PutMapping("/{username}/users/{id}")
     public UserEntity updateUserBySupervisorUserList(@RequestBody UserEntity user,
                                                      @PathVariable Long id,
@@ -99,7 +104,7 @@ public class SupervisorController {
         return userService.updateUserById(id, user);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @DeleteMapping("/{username}/users/{id}")
     public void deleteUserBySupervisorUserList(@PathVariable Long id,
                                                @PathVariable String username) throws IncorrectDataException {
@@ -111,7 +116,7 @@ public class SupervisorController {
     // ==================================================================================================
 
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users/{id}/bracelets")
     public List<BraceletEntity> getUserBraceletsByUserIdAndSupervisorUsername(@PathVariable String username,
                                                                               @PathVariable Long id) throws IncorrectDataException {
@@ -119,7 +124,7 @@ public class SupervisorController {
         return braceletService.getUserBraceletsByUserIdAndSupervisorUsername(id, username);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users/{userId}/bracelets/{braceletId}")
     public BraceletEntity getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                    @PathVariable("userId") Long userId,
@@ -128,7 +133,7 @@ public class SupervisorController {
         return braceletService.getUserBraceletByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @PostMapping("/{username}/users/{userId}/bracelets/")
     public BraceletEntity saveUserBraceletByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                     @PathVariable("userId") Long userId,
@@ -139,7 +144,7 @@ public class SupervisorController {
         return braceletService.saveBracelet(bracelet);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @PutMapping("/{username}/users/{userId}/bracelets/{braceletId}")
     public BraceletEntity updateUserBraceletByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                       @PathVariable("userId") Long userId,
@@ -150,7 +155,7 @@ public class SupervisorController {
         return braceletService.updateBraceletBySerialNumber(braceletId, bracelet);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @DeleteMapping("/{username}/users/{userId}/bracelets/{braceletId}")
     public void deleteUserBraceletByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                             @PathVariable("userId") Long userId,
@@ -164,7 +169,7 @@ public class SupervisorController {
     // ==============================================================================================
 
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users/{userId}/bracelets/{braceletId}/bracelet-data")
     public BraceletDataEntity getBraceletDataByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                        @PathVariable("userId") Long userId,
@@ -174,7 +179,7 @@ public class SupervisorController {
         return braceletDataService.getBraceletDataByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @PutMapping("/{username}/users/{userId}/bracelets/{braceletId}/bracelet-data")
     public BraceletDataEntity updateBraceletDataByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                         @PathVariable("userId") Long userId,
@@ -191,7 +196,7 @@ public class SupervisorController {
     // ================================================================================================
 
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users/{userId}/bracelets/{braceletId}/voice-messages")
     public List<VoiceMessageEntity> getVoiceMessagesByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                               @PathVariable("userId") Long userId,
@@ -201,7 +206,7 @@ public class SupervisorController {
         return voiceMessagesService.getVoiceMessagesByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users/{userId}/bracelets/{braceletId}/voice-messages/{voiceMessageId}")
     public VoiceMessageEntity getVoiceMessagesByVoiceMessageIdBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                                       @PathVariable("userId") Long userId,
@@ -212,7 +217,7 @@ public class SupervisorController {
         return voiceMessagesService.getVoiceMessagesByVoiceMessageIdBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username, voiceMessageId);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @PostMapping("/{username}/users/{userId}/bracelets/{braceletId}/voice-messages/")
     public VoiceMessageEntity saveVoiceMessagesByVoiceMessageIdBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                                       @PathVariable("userId") Long userId,
@@ -224,7 +229,7 @@ public class SupervisorController {
         return voiceMessagesService.saveVoiceMessage(voiceMessage);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @PutMapping("/{username}/users/{userId}/bracelets/{braceletId}/voice-messages/{voiceMessageId}")
     public VoiceMessageEntity updateVoiceMessagesByVoiceMessageIdBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                                          @PathVariable("userId") Long userId,
@@ -237,7 +242,7 @@ public class SupervisorController {
         return voiceMessagesService.updateVoiceMessageById(voiceMessageId, voiceMessage);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @DeleteMapping("/{username}/users/{userId}/bracelets/{braceletId}/voice-messages/{voiceMessageId}")
     public void deleteVoiceMessagesByVoiceMessageIdBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                                          @PathVariable("userId") Long userId,
@@ -253,7 +258,7 @@ public class SupervisorController {
     // =====================================================================================================
 
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users/{userId}/bracelets/{braceletId}/coordinates")
     public List<CoordinatesEntity> getCoordinatesByBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                            @PathVariable("userId") Long userId,
@@ -263,7 +268,7 @@ public class SupervisorController {
         return coordinatesService.getCoordinatesByBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @GetMapping("/{username}/users/{userId}/bracelets/{braceletId}/coordinates/{coordinatesId}")
     public CoordinatesEntity getCoordinatesByCoordinatesIdBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                                   @PathVariable("userId") Long userId,
@@ -274,7 +279,7 @@ public class SupervisorController {
         return coordinatesService.getCoordinatesByCoordinatesIdBraceletIdByUserIdAndSupervisorUsername(braceletId, userId, username, coordinatesId);
     }
 
-    @PreAuthorize("#username == principal.username")
+//    @PreAuthorize("#username == principal.username")
     @PostMapping("/{username}/users/{userId}/bracelets/{braceletId}/coordinates")
     public CoordinatesEntity saveCoordinatesByCoordinatesIdBraceletIdByUserIdAndSupervisorUsername(@PathVariable("username") String username,
                                                                                                        @PathVariable("userId") Long userId,
